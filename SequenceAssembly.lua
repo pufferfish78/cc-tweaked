@@ -45,7 +45,7 @@ function pickIngre(temp,ptr)
             --print(string.format("%s is an equipment",temp[idx]))
         elseif liquids[temp[idx]] then
             for _,tank in pairs(fluid_tanks) do
-                if tank.tanks()[1].name == liquids[temp[idx]] and tank.tanks()[1].amount >= 1000 then
+                if tank.tanks()[1] and (tank.tanks()[1].name == liquids[temp[idx]] and tank.tanks()[1].amount >= 1000) then
                     ptr[idx] = peripheral.getName(tank)
                     goto continue1
                 end
@@ -222,7 +222,6 @@ elseif arg[1] == "f" or arg[1] == "F" then
     storeFluid(peripheral.find("create:item_drain"))
 else
     print("\"c/C\":start configuration")
-    print("\"f/F\":start fluid storage")
 end
 
 
