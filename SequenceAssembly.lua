@@ -77,7 +77,7 @@ function pickIngre(temp,ptr)
         ptr[idx] = nil
         for slot, item in pairs(ingredients.list()) do
             if item.name == temp[idx] then
-                if idx==0 or (item.count >= temp.circ) then
+                if idx==0 or (item.count >= temp.circ and item.name ~= "create:wrench") then
                     ptr[idx] = slot
                     --print(string.format("%s at %d",temp[idx],slot))
                     break
@@ -96,6 +96,7 @@ function operation()
     readConfig()
     local recipes = {}
     local pointer = {}
+    local EMPTY = {}
     getRecipes(recipes,pointer)
     while recipes[1] do
         local state = false
@@ -119,6 +120,7 @@ function operation()
             for l=1,circ do
                 for k=1,#recipes[i] do
                     if recipes[i][k] == "create:mechanical_saw" then
+                        ingredients.pullItems(equipments["create:mechanical_saw"],1)
                         toname = peripheral.getName(saw)
 
                     elseif equipments[recipes[i][k]] then
@@ -135,10 +137,10 @@ function operation()
                         fromslot = 1
                         fromname = equipments[recipes[i][k]] or equipments["create:deployer"]
                     end
-                    local cur_depot = peripheral.wrap(fromname)
-                    nbt = cur_depot.getItemDetail(1).nbt
-                    name = cur_depot.getItemDetail(1).name
-                    while nbt == cur_depot.getItemDetail(1).nbt and name == cur_depot.getItemDetail(1).name do
+                    local cur_item = peripheral.wrap(fromname).getItemDetail(1) or EMPTY
+                    nbt = cur_item.nbt
+                    name = cur_item.name
+                    while nbt == cur_item.nbt and name == cur_item.name do
                         os.sleep(0.1)
                     end
                 end
@@ -146,6 +148,7 @@ function operation()
             print(fromslot)
             ingredients.pullItems(fromname,fromslot)
             ingredients.pullItems(peripheral.getName(deployer),1)
+            ingredients.pullItems(equipments["create:mechanical_saw"],1)
             ::continue3::
         end
         if not state then
