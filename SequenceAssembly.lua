@@ -222,6 +222,7 @@ elseif arg[1] == "f" or arg[1] == "F" then
     storeFluid(peripheral.find("create:item_drain"))
 else
     print("\"c/C\":start configuration")
+    print("\"f/F\":start fluid storage")
 end
 
 
