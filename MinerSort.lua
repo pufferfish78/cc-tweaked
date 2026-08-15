@@ -17,13 +17,18 @@ function config()
     file:close()
 end
 function select()
+    local binName = peripheral.getName(bin)
+    local items = vault.list()
     local preserveItems = {}
     for line in io.lines("sortConfig.txt") do
         preserveItems[line] = 1
     end
-    for slot,item in pairs(vault.list()) do
+    for slot,item in pairs(items) do
         if not preserveItems[item.name] then
-            vault.pushItems(peripheral.getName(bin),slot)
+            local times = math.ceil(item.count / 64)
+            for _=1,times do
+                vault.pushItems(binName,slot)
+            end
         end
     end
 end
