@@ -1,4 +1,4 @@
-local vault = peripheral.find("create:item_vault")
+local vault = peripheral.wrap("left")
 local bin = peripheral.find("fxntstorage:storage_box_entity")
 
 function config()
